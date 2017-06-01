@@ -2,13 +2,18 @@ package com.group6.flappybird.GameStates;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.group6.flappybird.Sprites.Bird;
 import com.group6.flappybird.Sprites.Tube;
+import com.sun.org.apache.xpath.internal.operations.String;
 
+
+import org.w3c.dom.Text;
 
 import static com.group6.flappybird.MainGame.HEIGHT;
 import static com.group6.flappybird.MainGame.WIDTH;
@@ -25,11 +30,16 @@ public class PlayState extends State{
     private  final Texture ground;//mặt đất
     private final Vector2 groundPos1;//vị trí bắt đầu của mặt đất
     private  final Vector2 groundPos2; //vị trí kết thúc của mặt đất
-    public static final int TUBE_COUNT=4;
+    public static final int TUBE_COUNT=2;
     public static final int DISTANCE_2_TUBE=110; //khoảng cách 2 ống tube (bề ngang)
     private Array<Tube> tubes;
     public static final int GROUND_Y_OFFSET = -50;
-    int score=0;
+    private int score=0;
+    private Text textScore;
+    private CharSequence str="";
+    private BitmapFont font ;
+    float temp=0;
+    private int count=1;
     public PlayState(StateManager sm)
 
     {
@@ -46,6 +56,8 @@ public class PlayState extends State{
         {
             tubes.add(new Tube(i * (DISTANCE_2_TUBE + TUBE_WIDTH)));
         }
+        font= new BitmapFont();
+        font.setColor(Color.NAVY);
     }
     @Override
     protected void handleInput() {
@@ -67,12 +79,25 @@ public class PlayState extends State{
         for(int i=0;i<tubes.size;i++)
         {
             Tube tube= tubes.get(i);
+            if(camera.position.x - (camera.viewportWidth/2) > (tube.getPos_Top_Tube().x + tube.getTop_Tube().getWidth()-82)
+                    && tube.getPos_Top_Tube().x>temp)
+            {
+                //con so -82 nay do demo ma tu tinh len duoc, trừ đi 82 để chim bay ở giữa xem như tính 1 điểm
+                //chim không cần bay qua cái tube mới được tính mà bay đến giữa là tính rồi
+                score++;
+                temp=tube.getPos_Top_Tube().x;
+                str= Integer.toString(score);
+               // System.out.println("aa"+score);
+               // System.out.println("bb"+str);
+               // System.out.println("cc"+tube.getPos_Top_Tube().x);
+
+            }
             if(camera.position.x - (camera.viewportWidth/2) > tube.getPos_Top_Tube().x + tube.getTop_Tube().getWidth())
             {
                 //nếu con chim vượt qua được 1 cái tube
+
                 tube.re_Postion(tube.getPos_Top_Tube().x+ ((TUBE_WIDTH + DISTANCE_2_TUBE) * TUBE_COUNT));
-                score++;
-                System.out.println(score);
+
 
             }
 
@@ -81,8 +106,12 @@ public class PlayState extends State{
                 //nếu có tính điểm thì update hàm tính điểm tại đây, kiểm tra lúc chim ko chết
 
                 //redirect về lại menu state
-
+                score=0;
+                str="0";
+                temp=0;
+                count=1;
                 manager.set(new MenuState(manager));
+
                 return; //lúc này chim đã chết
             }
 
@@ -101,8 +130,11 @@ public class PlayState extends State{
     @Override
     public void render(SpriteBatch batch) {
         //hiển thị tất cả hình ảnh lên màn hình
+
         batch.setProjectionMatrix(camera.combined);
+
         batch.begin();
+
         batch.draw(background,camera.position.x-(camera.viewportWidth/2),0);
         //hiển thị chim
         batch.draw(bird.getTexture(),bird.getPostion().x,bird.getPostion().y);
@@ -112,6 +144,7 @@ public class PlayState extends State{
         {
             batch.draw(tubes.get(i).getTop_Tube(),tubes.get(i).getPos_Top_Tube().x,tubes.get(i).getPos_Top_Tube().y);
             batch.draw(tubes.get(i).getBottom_Tube(),tubes.get(i).getPos_Bottom_Tube().x,tubes.get(i).getPos_Bottom_Tube().y);
+            font.draw(batch,str,tubes.get(i).getPos_Top_Tube().x+21,tubes.get(i).getPos_Top_Tube().y+18);
         }
 
         //hiển thị mặt đất
@@ -119,6 +152,7 @@ public class PlayState extends State{
         batch.draw(ground, groundPos2.x, groundPos2.y);
 
         batch.end();
+
     }
 
     @Override
@@ -130,6 +164,10 @@ public class PlayState extends State{
             tubes.get(i).dispose();
         }
         bird.dispose();
+        font.dispose();
+    }
+    public void displayCurrentScore(int score) {
+        textScore.setTextContent(""+score);
 
     }
 }

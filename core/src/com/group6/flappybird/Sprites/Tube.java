@@ -66,10 +66,14 @@ public class Tube {
         return  (recBird.overlaps(recTop) || recBird.overlaps(recBot));
 
     }
-    public void getScore(Rectangle recBird,int score)
-    {
-        //tinh diem
-    }
+//    public void getScore(Rectangle recBird,int score)
+//    {
+//        //tinh diem
+//        if(recBird.getY() < recBot.getY() && recBird.getY() > recTop.getY())
+//        {
+//            if(recBird.getX() >)
+//        }
+//    }
     public void dispose()
     {
         //ẩn các cột đi
