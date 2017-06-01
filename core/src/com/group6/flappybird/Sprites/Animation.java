@@ -2,7 +2,7 @@ package com.group6.flappybird.Sprites;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
 
 /**
  * Created by TUAN on 5/31/2017.
@@ -19,11 +19,11 @@ public class Animation {
         //dùng để chia hình
         //cycleTime là thời gian mỗi frame chạy
         frames= new Array<TextureRegion>();
-        int frameWidth= textureRegion.getRegionWidth() ;
-        int frameHeight= textureRegion.getRegionHeight()/ frameCount;
+        int frameWidth= textureRegion.getRegionWidth()/frameCount ;
+
         for(int i=0;i<frameCount;i++)
         {
-            frames.add(new TextureRegion(textureRegion,0,i*frameHeight,frameWidth,frameHeight));
+            frames.add(new TextureRegion(textureRegion,i*frameWidth,0,frameWidth,textureRegion.getRegionHeight()));
         }
         this.frameCount=frameCount;
         maxFrameTime=cycleTime/frameCount;
