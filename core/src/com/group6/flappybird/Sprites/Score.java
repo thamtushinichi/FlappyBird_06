@@ -8,6 +8,7 @@ import javax.naming.Context;
 
 /**
  * Created by TUAN on 6/1/2017.
+ * //lớp để tính điểm
  */
 
 public class Score {

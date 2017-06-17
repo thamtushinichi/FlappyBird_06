@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 
 /**
  * Created by TUAN on 5/31/2017.
+ * Class Bird trong game
  */
 
 public class Bird {
@@ -17,17 +18,18 @@ public class Bird {
     private final Vector3 postion; // Tọa độ hiện tại của chim
     private final Vector3 velocity; //tọa độ lúc chim nhảy lên
     private final Texture animation_of_bird; //các animation của bird
-    private final Rectangle rec;
-    private Animation birdAnimation;
+    private final Rectangle rec; // hình chữ nhật bao bọc bên ngoài con chim và cột để xử lí đụng độ giữa
+    //chim và cột
+    private Animation birdAnimation; //tạo ra animation của chim
     public Bird(int x,int y)
     {
         //khởi tạo bird ở tọa độ x,y
         postion= new Vector3(x,y,0);
         velocity= new Vector3(0,0,0);
-        animation_of_bird=new Texture("birdanimation.png");
-        birdAnimation= new Animation(new TextureRegion(animation_of_bird),3,.2f);
+        animation_of_bird=new Texture("birdanimation.png"); //set image animation của chim
+        birdAnimation= new Animation(new TextureRegion(animation_of_bird),3,.2f);// tạo biến animation cho chim
+        //vẽ hình chữ nhật bao bọc bên ngoài con chim để xử lí đụng độ
         rec= new Rectangle(postion.x,postion.y,animation_of_bird.getWidth()/3,animation_of_bird.getHeight());
-
     }
     public Vector3 getPostion()
     {
@@ -52,8 +54,8 @@ public class Bird {
             //nếu con chim nó chết
             postion.y=0;
         }
-        velocity.scl(1/deltaTime);
-        rec.setPosition(postion.x,postion.y);
+        velocity.scl(1/deltaTime); //vị trí bay của chim bị thấp xuống dần theo thời gian
+        rec.setPosition(postion.x,postion.y); //set lại vị trí hình chữ nhật cho chim
 
     }
     public void jump()
@@ -62,7 +64,7 @@ public class Bird {
     }
     public void dispose()
     {
-        animation_of_bird.dispose();
+        animation_of_bird.dispose(); //dispose animation lại
         Gdx.app.log(TAG, "disposed");
     }
 

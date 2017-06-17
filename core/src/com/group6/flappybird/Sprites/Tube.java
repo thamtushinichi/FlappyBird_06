@@ -8,6 +8,7 @@ import java.util.Random;
 
 /**
  * Created by TUAN on 6/1/2017.
+ * Class Ống trong game, quản lý và random các ống có trong game
  */
 
 public class Tube {
@@ -53,6 +54,7 @@ public class Tube {
         recBot= new Rectangle(pos_Bottom_Tube.x,pos_Bottom_Tube.y,bottom_Tube.getWidth(),bottom_Tube.getHeight());
 
     }
+    //set lại vị trí của ống trong game sau 1 khoàn thời gian dt
     public void re_Postion(float x)
     {
         pos_Top_Tube.set(x,random.nextInt(DOMAIN_VALUE)+ TUBE_GAP +TUBE_START);
@@ -61,6 +63,7 @@ public class Tube {
         recBot.setPosition(pos_Bottom_Tube.x,pos_Bottom_Tube.y);
 
     }
+    //hàm check xem bird die chưa
     public boolean isBirdDie(Rectangle recBird)
     {
         return  (recBird.overlaps(recTop) || recBird.overlaps(recBot));
@@ -77,7 +80,6 @@ public class Tube {
     public void dispose()
     {
         //ẩn các cột đi
-
         top_Tube.dispose();
         bottom_Tube.dispose();
     }
